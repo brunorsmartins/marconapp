@@ -49,6 +49,10 @@ def project_list(request):
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
     transactions = Transaction.objects.filter(project=project)
+    total_income = transactions.filter(is_expense=False).aggregate(Sum('amount'))['amount__sum'] or 0
+    total_expenses = transactions.filter(is_expense=True).aggregate(Sum('amount'))['amount__sum'] or 0
+    balance = total_income - total_expenses
+    
     if request.method == 'POST':
         form = TransactionForm(request.POST)
         if form.is_valid():
@@ -58,7 +62,13 @@ def project_detail(request, pk):
             return redirect(reverse('project-detail', args=[pk]))
     else:
         form = TransactionForm()
-    return render(request, 'finance/project_detail.html', {'project': project, 'transactions': transactions, 'form': form})
+    
+    return render(request, 'finance/project_detail.html', {
+        'project': project,
+        'transactions': transactions,
+        'form': form,
+        'balance': balance
+    })
 
 def delete_project(request, pk):
     project = get_object_or_404(Project, pk=pk)
