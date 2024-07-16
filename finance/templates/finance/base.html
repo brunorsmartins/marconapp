@@ -3,16 +3,28 @@
 <head>
     {% load static %}
     <title>Finance App</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy'
+            });
+        });
+    </script>
 </head>
-<body>
-    <header>
+<body class="container">
+    <header class="my-4">
         <h1>Finance App</h1>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'project-list' %}">Projects</a></li>
-                <li><a href="{% url 'transaction-list' %}">Transactions</a></li>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'project-list' %}">Projetos</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'transaction-list' %}">Transações</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'common-expense-list' %}">Gastos Comuns</a></li>
             </ul>
         </nav>
     </header>

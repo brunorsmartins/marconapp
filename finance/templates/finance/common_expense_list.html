@@ -1,0 +1,10 @@
+{% extends 'finance/base.html' %}
+
+{% block content %}
+<h2>Common Expenses</h2>
+<ul>
+    {% for expense in common_expenses %}
+    <li>{{ expense.date }}: {{ expense.description }} - {{ expense.amount }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

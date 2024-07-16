@@ -1,0 +1,10 @@
+{% extends 'finance/base.html' %}
+
+{% block content %}
+  <h2>Tem certeza de que deseja excluir "{{ object }}"?</h2>
+  <form method="post">
+      {% csrf_token %}
+      <button type="submit">Sim, excluir</button>
+      <a href="{% if object.project %}{% url 'project-detail' object.project.pk %}{% else %}{% url 'project-list' %}{% endif %}">Cancelar</a>
+  </form>
+{% endblock %}
