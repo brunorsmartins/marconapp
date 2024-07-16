@@ -12,11 +12,21 @@ class Project(models.Model):
         return self.name
 
 class Transaction(models.Model):
-    project = models.ForeignKey(Project, related_name='transactions', on_delete=models.CASCADE, null=True, blank=True)
     description = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField()
-    is_expense = models.BooleanField(default=True)
+    is_expense = models.BooleanField(default=True)  # Campo existente
 
     def __str__(self):
-        return f"{self.description} - {self.amount}"
+        return f"{self.description} - R$ {self.amount}"
+
+    def __str__(self):
+        return f"{self.description} - R$ {self.amount}"
+
+class CommonExpense(models.Model):
+    description = models.CharField(max_length=255)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateField()
+
+    def __str__(self):
+        return f"{self.description} - R$ {self.amount}"
