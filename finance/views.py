@@ -26,13 +26,18 @@ class TransactionDetail(generics.RetrieveUpdateDestroyAPIView):
 
 # Template views
 def home(request):
-    current_month = timezone.now().month
     current_year = timezone.now().year
-    total_expenses = Transaction.objects.filter(date__month=current_month, date__year=current_year, is_expense=True).aggregate(Sum('amount'))['amount__sum'] or 0
-    total_income = Transaction.objects.filter(date__month=current_month, date__year=current_year, is_expense=False).aggregate(Sum('amount'))['amount__sum'] or 0
+    monthly_data = []
+
+    for month in range(1, 13):
+        total_expenses = Transaction.objects.filter(date__month=month, date__year=current_year, is_expense=True).aggregate(Sum('amount'))['amount__sum'] or 0
+        total_income = Transaction.objects.filter(date__month=month, date__year=current_year, is_expense=False).aggregate(Sum('amount'))['amount__sum'] or 0
+        balance = float(total_income - total_expenses)  # Convertendo para float
+        monthly_data.append(balance)
+    
     return render(request, 'finance/home.html', {
-        'total_expenses': total_expenses,
-        'total_income': total_income
+        'monthly_data': monthly_data,
+        'current_year': current_year,
     })
 
 def project_list(request):

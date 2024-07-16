@@ -1,11 +1,37 @@
 {% extends 'finance/base.html' %}
+{% load static %}
 
 {% block content %}
-<h2>Welcome to the Finance App</h2>
-
-<h3>Dashboard</h3>
-<p>Total Income: {{ total_income }}</p>
-<p>Total Expenses: {{ total_expenses }}</p>
-
-<p>Use the navigation links to manage projects and transactions.</p>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <canvas id="monthlyBalanceChart"></canvas>
+        </div>
+    </div>
+</div>
+<!-- Carregar Chart.js de uma CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('monthlyBalanceChart').getContext('2d');
+    const monthlyBalanceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            datasets: [{
+                label: 'Saldo Mensal (R$)',
+                data: {{ monthly_data|safe }},
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}
