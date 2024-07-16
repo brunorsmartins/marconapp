@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Transações Gerais</h2>
-    <table class="table table-striped">
+    <h2>Transações</h2>
+    <table class="table">
         <thead>
             <tr>
                 <th>Descrição</th>
@@ -19,7 +19,7 @@
                 <td>{{ transaction.description }}</td>
                 <td>{{ transaction.amount }}</td>
                 <td>{{ transaction.date }}</td>
-                <td>{{ transaction.get_expense_or_income_display }}</td>
+                <td>{{ transaction.get_is_expense_display }}</td>
                 <td>
                     <form method="post" action="{% url 'transaction-delete' transaction.pk %}">
                         {% csrf_token %}
