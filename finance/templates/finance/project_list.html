@@ -2,16 +2,20 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Gastos Comuns</h2>
+    <h2>Projetos</h2>
     <ul class="list-group">
-        {% for expense in expenses %}
-        <li class="list-group-item">
-            {{ expense.date }}: {{ expense.description }} - R$ {{ expense.amount }}
+        {% for project in projects %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{% url 'project-detail' project.pk %}">{{ project.name }}</a>
+            <form action="{% url 'project-delete' project.pk %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+            </form>
         </li>
         {% endfor %}
     </ul>
 
-    <h3 class="mt-4">Adicionar Gasto Comum</h3>
+    <h3 class="mt-4">Adicionar Projeto</h3>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

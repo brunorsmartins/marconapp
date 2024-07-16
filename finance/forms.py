@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project, Transaction, CommonExpense
+from .models import Project, Transaction
 
 class ProjectForm(forms.ModelForm):
     class Meta:
@@ -23,7 +23,7 @@ class TransactionForm(forms.ModelForm):
 
     class Meta:
         model = Transaction
-        fields = ['description', 'amount', 'date']
+        fields = ['description', 'amount', 'date', 'expense_or_income']
         widgets = {
             'description': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'amount': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
@@ -34,25 +34,10 @@ class TransactionForm(forms.ModelForm):
             'amount': 'Quantia',
             'date': 'Data',
         }
-    
+
     def save(self, commit=True):
         instance = super().save(commit=False)
         instance.is_expense = self.cleaned_data['expense_or_income'] == 'True'
         if commit:
             instance.save()
         return instance
-
-class CommonExpenseForm(forms.ModelForm):
-    class Meta:
-        model = CommonExpense
-        fields = ['description', 'amount', 'date']
-        widgets = {
-            'date': forms.TextInput(attrs={'class': 'datepicker form-control', 'autocomplete': 'off'}),
-            'description': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
-            'amount': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
-        }
-        labels = {
-            'description': 'Descrição',
-            'amount': 'Quantia',
-            'date': 'Data',
-        }

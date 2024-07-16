@@ -1,11 +1,12 @@
 from django.urls import path
-from finance import views as finance_views
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', finance_views.home, name='home'),
-    path('api/projects/', finance_views.project_list_create, name='project-list'),
-    path('api/projects/<int:pk>/', finance_views.project_detail, name='project-detail'),
-    path('api/transactions/', finance_views.transaction_list_create, name='transaction-list'),
-    path('common-expenses/', finance_views.common_expense_list, name='common-expense-list'),
+    path('', views.home, name='home'),
+    path('transactions/', views.transaction_list, name='transaction-list'),
+    path('transactions/add/', views.transaction_add, name='transaction-add'),
+    path('transactions/<int:pk>/delete/', views.transaction_delete, name='transaction-delete'),
+    path('projects/', views.project_list, name='project-list'),
+    path('projects/<int:pk>/', views.project_detail, name='project-detail'),
+    path('projects/<int:pk>/delete/', views.project_delete, name='project-delete'),
 ]
