@@ -15,21 +15,16 @@ def home(request):
         'balance': balance
     })
 
-class ProjectListCreate(View):
-    def get(self, request):
-        projects = Project.objects.all()
-        form = ProjectForm()
-        return render(request, 'finance/project_list.html', {'projects': projects, 'form': form})
-
-    def post(self, request):
+def project_list(request):
+    if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('project-list')
-        projects = Project.objects.all()
-        return render(request, 'finance/project_list.html', {'projects': projects, 'form': form})
-
-project_list = ProjectListCreate.as_view()
+    else:
+        form = ProjectForm()
+    projects = Project.objects.all()
+    return render(request, 'finance/project_list.html', {'projects': projects, 'form': form})
 
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
@@ -60,23 +55,16 @@ def project_delete(request, pk):
     project.delete()
     return redirect('project-list')
 
-class TransactionListCreate(View):
-    def get(self, request):
-        transactions = Transaction.objects.filter(project__isnull=True)
-        form = TransactionForm()
-        return render(request, 'finance/transaction_list.html', {'transactions': transactions, 'form': form})
-
-    def post(self, request):
+def transaction_list(request):
+    if request.method == 'POST':
         form = TransactionForm(request.POST)
         if form.is_valid():
-            transaction = form.save(commit=False)
-            transaction.project = None
-            transaction.save()
+            form.save()
             return redirect('transaction-list')
-        transactions = Transaction.objects.filter(project__isnull=True)
-        return render(request, 'finance/transaction_list.html', {'transactions': transactions, 'form': form})
-
-transaction_list = TransactionListCreate.as_view()
+    else:
+        form = TransactionForm()
+    transactions = Transaction.objects.filter(project__isnull=True)
+    return render(request, 'finance/transaction_list.html', {'transactions': transactions, 'form': form})
 
 def transaction_add(request):
     if request.method == 'POST':
